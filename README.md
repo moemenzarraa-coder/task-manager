@@ -1,144 +1,80 @@
-\# Task Manager - Mini-projet DevSecOps
-
-
+# Task Manager - Mini-projet DevSecOps
 
 Application de gestion des tâches (API REST Spring Boot) utilisée comme support pour une chaîne CI/CD sécurisée : Jenkins, SonarQube, OWASP Dependency-Check, Docker, Trivy, Docker Hub, Kubernetes (Minikube) et OWASP ZAP.
 
-
-
-\## Architecture
-
-
+## Architecture
 
 ```
-
 controller/   TaskController        -> endpoints REST /api/tasks
-
 service/      TaskService           -> logique métier
-
 repository/   TaskRepository        -> accès aux données (Spring Data JPA)
-
 model/        Task, TaskStatus      -> entité JPA
-
 exception/    GlobalExceptionHandler, TaskNotFoundException
-
 ```
-
-
 
 Base de données : H2 en mémoire (les données sont perdues au redémarrage).
 
+## Prérequis
 
+- Java 17 ou plus
+- Maven 3.9+
+- Git
 
-\## Prérequis
-
-
-
-\- Java 17 ou plus
-
-\- Maven 3.9+
-
-\- Git
-
-
-
-\## Installation et exécution
-
-
+## Installation et exécution
 
 ```bash
-
 git clone https://github.com/moemenzarraa-coder/task-manager.git
-
 cd task-manager
-
 mvn clean package
-
 java -jar target/task-manager.jar
-
 ```
-
-
 
 L'application démarre sur `http://localhost:8080`.
 
-
-
-\## Tests
-
-
+## Tests
 
 ```bash
-
 mvn test
-
 ```
-
-
 
 Le rapport de couverture JaCoCo est généré dans `target/site/jacoco/index.html`.
 
-
-
-\## API
-
-
+## API
 
 | Méthode | URL | Description |
-
 |---|---|---|
-
 | GET | `/api/tasks` | Liste des tâches (filtre optionnel `?status=TODO`) |
-
 | GET | `/api/tasks/{id}` | Détail d'une tâche |
-
 | POST | `/api/tasks` | Créer une tâche |
-
 | PUT | `/api/tasks/{id}` | Modifier une tâche |
-
 | PATCH | `/api/tasks/{id}/status?status=DONE` | Changer le statut |
-
 | DELETE | `/api/tasks/{id}` | Supprimer une tâche |
-
 | GET | `/actuator/health` | État de l'application |
 
+Statuts possibles : `TODO`, `IN_PROGRESS`, `DONE`.
 
+Exemple :
 
-Statuts possibles : `TODO`, `IN\_PROGRESS`, `DONE`.
+```bash
+curl -X POST http://localhost:8080/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Ecrire le Dockerfile","description":"Phase 3"}'
+```
 
+## Organisation des branches
 
+- `main` : version stable, déployée par le pipeline
+- `develop` : intégration des fonctionnalités
+- `feature/<nom>` : une branche par fonctionnalité, fusionnée dans `develop` via pull request
 
-\## Organisation des branches
-
-
-
-\- `main` : version stable, déployée par le pipeline
-
-\- `develop` : intégration des fonctionnalités
-
-\- `feature/<nom>` : une branche par fonctionnalité, fusionnée dans `develop` via pull request
-
-
-
-\## Docker
-
-
+## Docker
 
 À compléter (phase 3).
 
-
-
-\## Déploiement Kubernetes
-
-
+## Déploiement Kubernetes
 
 À compléter (phase 4).
 
-
-
-\## Pipeline CI/CD
-
-
+## Pipeline CI/CD
 
 À compléter (phases 5 et 6).
-
